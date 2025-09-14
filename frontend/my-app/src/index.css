@@ -1,0 +1,60 @@
+/* Reset + base */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #0a1f44; /* navy blue */
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Home container */
+.home-container {
+  text-align: center;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+/* Flex for user/admin boxes */
+.box-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* Each box */
+.box {
+  background-color: #112b5f; /* slightly lighter navy */
+  padding: 40px;
+  border-radius: 12px;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.box:hover {
+  background-color: #1c3d7a;
+  transform: scale(1.05);
+}
+
+/* Icons inside box */
+.icon {
+  font-size: 50px;
+  color: #4db8ff; /* light blue */
+  margin-bottom: 10px;
+}
+
+/* Page text */
+.page-text {
+  font-size: 24px;
+}

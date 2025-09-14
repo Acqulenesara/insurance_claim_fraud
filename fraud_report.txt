@@ -1,0 +1,27 @@
+Insurance Fraud Detection Report
+==================================================
+
+Claim ID: 1
+Risk Level: HIGH
+Score: 85/100
+Customer: C001
+Amount: $5,000.00
+Reasons: Duplicate claim, Similar description, Social media conflict
+------------------------------
+
+Claim ID: 2
+Risk Level: HIGH
+Score: 85/100
+Customer: C001
+Amount: $5,000.00
+Reasons: Duplicate claim, Similar description, Social media conflict
+------------------------------
+
+Claim ID: 5
+Risk Level: MEDIUM
+Score: 40/100
+Customer: C004
+Amount: $200,000.00
+Reasons: Medical mismatch
+------------------------------
+
