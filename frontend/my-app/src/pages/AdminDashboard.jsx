@@ -43,7 +43,7 @@ const AdminDashboard = () => {
           {options.map((opt) => (
             <div 
               key={opt.id} 
-              className={card card-${opt.color}} 
+              className={'card card-${opt.color}'} 
               onClick={() => navigate(opt.path)} // <-- this now works
             >
               <div className="card-top-bar"></div>
