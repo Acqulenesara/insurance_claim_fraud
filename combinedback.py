@@ -2,7 +2,7 @@
 import os
 
 from logics import AutoInsuranceFraudDetector  # your first system
-from perpbot import get_catboost_prediction, analyze_claim_perplexity
+from perpbotback import get_catboost_prediction, analyze_claim_perplexity
 
 PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
 if not PERPLEXITY_API_KEY:
