@@ -1,0 +1,182 @@
+/* Background */
+.claims-page {
+  min-height: 100vh;
+  padding: 650px 40px 40px 40px; /* increased top padding */
+  background: linear-gradient(135deg, #141E30, #243B55);
+  color: #fff;
+  font-family: "Segoe UI", sans-serif;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+
+/* Header */
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.header h1 {
+  font-size: 2.5rem;
+  margin: 10px 0;
+  background: linear-gradient(to right, #fff, #9ae6f0, #87b5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.header p {
+  color: #ccc;
+  font-size: 1.1rem;
+}
+.icon-box {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  box-shadow: 0 4px 15px rgba(0, 150, 255, 0.4);
+}
+
+/* Claims grid */
+.claims-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* Claim card */
+.claim-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 18px;
+  padding: 20px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-height: 280px;
+}
+.claim-card:hover {
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+.claim-card.expanded {
+  min-height: 400px;
+}
+
+/* Priority bar */
+.priority-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 100%;
+}
+.priority-high {
+  background: red;
+}
+.priority-medium {
+  background: orange;
+}
+.priority-low {
+  background: green;
+}
+
+/* Header inside card */
+.claim-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.claim-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.avatar {
+  background: linear-gradient(to right, #00c6ff, #0072ff);
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.claim-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.date {
+  font-size: 0.8rem;
+  color: #bbb;
+}
+.chevron {
+  transition: transform 0.3s ease;
+  color: #ccc;
+}
+.chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Amount + Status */
+.amount-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+}
+.amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #4fffb0;
+}
+.status {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.status.approved {
+  background: rgba(0, 255, 0, 0.2);
+  color: #4cff4c;
+}
+.status.under-review {
+  background: rgba(255, 200, 0, 0.2);
+  color: #ffcd4c;
+}
+.status.processing {
+  background: rgba(0, 150, 255, 0.2);
+  color: #4caeff;
+}
+
+/* Basic info */
+.basic-info {
+  font-size: 0.9rem;
+  color: #ddd;
+}
+.basic-info p {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+.icon {
+  margin-right: 8px;
+}
+
+/* Expanded content */
+.expanded-content {
+  margin-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 10px;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+.expanded-content p {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
