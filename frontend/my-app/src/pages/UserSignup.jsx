@@ -49,6 +49,7 @@ function Signup() {
             >
               Username
             </label>
+            <br />
             <input
               type="text"
               className="px-3 py-3 rounded-3"
@@ -76,6 +77,7 @@ function Signup() {
             >
               Password
             </label>
+            <br />
             <input
               type="password"
               className="px-3 py-3 rounded-3"

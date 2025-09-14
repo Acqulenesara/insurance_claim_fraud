@@ -63,6 +63,7 @@ function AdminLogin() {
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className="form-label">Email</label>
+            <br />
             <input
               type="email"
               className="form-control"
@@ -75,6 +76,7 @@ function AdminLogin() {
 
           <div className="mb-3">
             <label className="form-label">Password</label>
+            <br />
             <input
               type="password"
               className="form-control"
@@ -84,7 +86,7 @@ function AdminLogin() {
               required
             />
           </div>
-
+          <br />
           <motion.button
             type="submit"
             disabled={loading}
@@ -99,7 +101,7 @@ function AdminLogin() {
             {loading ? "Logging in..." : "Login"}
           </motion.button>
         </form>
-
+        <br />
         <div className="text-center mt-3">
           <span
             style={{ cursor: "pointer", color: "#00c6ff" }}

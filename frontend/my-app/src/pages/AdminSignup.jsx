@@ -83,6 +83,7 @@ function AdminSignup() {
         <form onSubmit={handleSignup}>
           <div className="mb-3">
             <label className="form-label">Username</label>
+            <br />
             <input
               type="text"
               name="username"
@@ -96,6 +97,7 @@ function AdminSignup() {
 
           <div className="mb-3">
             <label className="form-label">Email</label>
+            <br />
             <input
               type="email"
               name="email"
@@ -109,6 +111,7 @@ function AdminSignup() {
 
           <div className="mb-3">
             <label className="form-label">Password</label>
+            <br />
             <input
               type="password"
               name="password"
@@ -120,6 +123,7 @@ function AdminSignup() {
               minLength="6"
             />
           </div>
+          <br />
 
           <motion.button
             type="submit"
@@ -135,6 +139,7 @@ function AdminSignup() {
             {loading ? "Creating Account..." : "Sign Up"}
           </motion.button>
         </form>
+        <br />
 
         <div className="text-center mt-3">
           <span

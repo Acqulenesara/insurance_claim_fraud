@@ -110,7 +110,7 @@ function CustomerRegistration() {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label className="form-label">Full Name</label>
+            <label className="form-label">Full Name</label><br />
             <input
               type="text"
               name="name"
@@ -123,7 +123,7 @@ function CustomerRegistration() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Email</label>
+            <label className="form-label">Email</label><br />
             <input
               type="email"
               name="email"
@@ -136,7 +136,7 @@ function CustomerRegistration() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Password</label>
+            <label className="form-label">Password</label><br />
             <input
               type="password"
               name="password"
@@ -150,7 +150,7 @@ function CustomerRegistration() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Phone</label>
+            <label className="form-label">Phone</label><br />
             <input
               type="tel"
               name="phone"
@@ -163,7 +163,7 @@ function CustomerRegistration() {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Address</label>
+            <label className="form-label">Address</label><br />
             <input
               type="text"
               name="address"
@@ -176,7 +176,7 @@ function CustomerRegistration() {
           </div>
 
           
-
+          <br />
           <motion.button
             type="submit"
             disabled={loading}
@@ -189,9 +189,11 @@ function CustomerRegistration() {
             whileHover={!loading ? { scale: 1.05 } : {}}
           >
             {loading ? "Registering..." : "Register"}
+            
           </motion.button>
         </form>
-
+        
+        <br />
         <div className="text-center mt-3">
           <span
             style={{ cursor: "pointer", color: "#00c6ff" }}

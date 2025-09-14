@@ -62,6 +62,7 @@ function UserLogin() {
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <label className="form-label">Email</label>
+            <br />
             <input
               type="email"
               className="form-control"
@@ -74,6 +75,7 @@ function UserLogin() {
 
           <div className="mb-3">
             <label className="form-label">Password</label>
+            <br />
             <input
               type="password"
               className="form-control"
@@ -83,6 +85,7 @@ function UserLogin() {
               required
             />
           </div>
+          <br />
 
           <motion.button
             type="submit"
@@ -98,15 +101,6 @@ function UserLogin() {
             {loading ? "Logging in..." : "Login"}
           </motion.button>
         </form>
-
-        <div className="text-center mt-3">
-          <span
-            style={{ cursor: "pointer", color: "#00c6ff" }}
-            onClick={() => navigate("/customer-registration")}
-          >
-            Don't have an account? Register
-          </span>
-        </div>
       </motion.div>
     </motion.div>
   );

@@ -3,10 +3,12 @@ import joblib
 import json
 import requests
 import os
+from dotenv import load_dotenv
 
 # ---------------- CONFIG ----------------
 LOW_THRESHOLD = 10    # Skip final check if fraud_score <= LOW_THRESHOLD
 HIGH_THRESHOLD = 70   # If fraud_score >= HIGH_THRESHOLD, remove follow-up questions
+load_dotenv()
 PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
 
 # ---------------- LOAD MODELS ----------------
@@ -74,7 +76,8 @@ Output strictly in JSON with this schema:
   "action": one of ["accept", "request_documents", "escalate_investigation", "reject"],
   "follow_up_questions": [ up to 2 short strings ]
 }
-"""
+""" 
+    print(PERPLEXITY_API_KEY)
     evidence = {
         "CLAIM_DETAILS": claim_details,
         "CATBOOST_RESULT": catboost_result,
@@ -115,8 +118,8 @@ Output strictly in JSON with this schema:
 # ---------------- MAIN ----------------
 if __name__ == "__main__":
     print("Enter insurance claim details below:")
-    claimant_name = input("Claimant Name: ").strip()
-    vehicle_reg = input("Vehicle Registration: ").strip()
+    claimant_name =input("Claimant Name: ").strip()
+    vehicle_reg =  input("Vehicle Registration: ").strip()
     reported_damage = input("Reported Damage: ").strip()
     claim_amount = float(input("Claim Amount: ").strip())
 

@@ -8,6 +8,7 @@ import UserDashboard from "./pages/UserDashboard";
 import ClaimUpload from "./pages/ClaimUpload";
 import ClaimSuccess from "./pages/ClaimSuccess"; // Add this import
 import AdminLogin from "./pages/AdminLogin";
+import AdminSignup from "./pages/AdminSignup"; // Make sure this is imported
 import AdminDashboard from "./pages/AdminDashboard";
 import CompanyClaims from "./pages/CompanyClaims";
 import CustomerRegistration from "./pages/CustomerRegistration";
@@ -28,10 +29,11 @@ function App() {
         <Route path="/user-signup" element={<UserSignup />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/upload-claim" element={<ClaimUpload />} />
-        <Route path="/claim-success" element={<ClaimSuccess />} /> {/* Add this route */}
+        <Route path="/claim-success" element={<ClaimSuccess />} />
 
         {/* Admin Routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-signup" element={<AdminSignup />} /> {/* Add this route */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/company-claims/:id" element={<CompanyClaims />} />
         <Route path="/customer-registration" element={<CustomerRegistration />} />
