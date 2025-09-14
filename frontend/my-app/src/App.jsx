@@ -8,7 +8,6 @@ import UserDashboard from "./pages/UserDashboard";
 import ClaimUpload from "./pages/ClaimUpload";
 import ClaimSuccess from "./pages/ClaimSuccess"; // Add this import
 import AdminLogin from "./pages/AdminLogin";
-import AdminSignup from "./pages/AdminSignup";
 import AdminDashboard from "./pages/AdminDashboard";
 import CompanyClaims from "./pages/CompanyClaims";
 import CustomerRegistration from "./pages/CustomerRegistration";
@@ -33,7 +32,6 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin-signup" element={<AdminSignup />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/company-claims/:id" element={<CompanyClaims />} />
         <Route path="/customer-registration" element={<CustomerRegistration />} />
