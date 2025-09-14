@@ -1,15 +1,52 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 
 function AdminSignup() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
-    navigate("/user-login"); 
+    setLoading(true);
+    setError("");
+    
+    try {
+      // Create user account
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      
+      // Store admin data in Firestore
+      await setDoc(doc(db, 'admins', userCredential.user.uid), {
+        username: formData.username,
+        email: formData.email,
+        role: 'admin',
+        createdAt: new Date()
+      });
+      
+      alert("Admin account created successfully!");
+      navigate("/admin-login");
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -23,8 +60,7 @@ function AdminSignup() {
       <motion.div
         className="shadow-lg rounded-4"
         style={{
-          width: "340px",
-          minHeight: "260px",
+          width: "380px",
           padding: "2rem",
           background: "rgba(255, 255, 255, 0.1)",
           backdropFilter: "blur(12px)",
@@ -36,99 +72,77 @@ function AdminSignup() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <h2 className="text-center fw-bold" style={{ marginBottom: "20px", textAlign: "center"  }}>
-          SignUp
-        </h2>
+        <h2 className="text-center fw-bold mb-4">Admin Signup</h2>
 
-        <form onSubmit={handleLogin}>
-          {/* Username */}
-          <div style={{ marginBottom: "18px" }}>
-            <label
-              className="d-block fw-semibold"
-              style={{ fontSize: "13px", marginBottom: "12px" }} // ⬅️ More gap
-            >
-              Username
-            </label>
+        {error && (
+          <div className="alert alert-danger" style={{ fontSize: "12px", padding: "8px" }}>
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSignup}>
+          <div className="mb-3">
+            <label className="form-label">Username</label>
             <input
               type="text"
-              className="px-3 py-3 rounded-3"
-              style={{
-                width: "98%",
-                background: "#fff",
-                border: "1px solid #ccc",
-                color: "#000",
-                display: "block",
-                padding: "7px",
-                borderRadius: "3px",
-              }}
-              placeholder="Enter your username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              name="username"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.username}
+              onChange={handleChange}
               required
             />
           </div>
 
-          {/* Password */}
-          <div style={{ marginBottom: "25px" }}>
-            <label
-              className="d-block fw-semibold"
-              style={{ fontSize: "13px", marginBottom: "8px" }} // ⬅️ More gap
-            >
-              Password
-            </label>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Password</label>
             <input
               type="password"
-              className="px-3 py-3 rounded-3"
-              style={{
-                width: "98%",
-                background: "#fff",
-                border: "1px solid #ccc",
-                color: "#000",
-                display: "block",
-                padding: "7px",
-                borderRadius: "3px",
-              }}
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.password}
+              onChange={handleChange}
               required
+              minLength="6"
             />
           </div>
 
-          {/* SignUp Button */}
           <motion.button
             type="submit"
+            disabled={loading}
             className="btn w-100 fw-bold rounded-pill py-3"
             style={{
-              background: "linear-gradient(90deg, #00c6ff, #0072ff)",
+              background: loading ? "#666" : "linear-gradient(90deg, #00c6ff, #0072ff)",
               border: "none",
               color: "#fff",
-              fontSize: "14px", // ⬅️ Smaller text
-              letterSpacing: "1px",
-              marginTop: "5px",
             }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 20px rgba(0, 114, 255, 0.6)",
-            }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={!loading ? { scale: 1.05 } : {}}
           >
-            Sign up
+            {loading ? "Creating Account..." : "Sign Up"}
           </motion.button>
         </form>
 
-        {/* Signup Link */}
-        <div className="text-center" style={{ marginTop: "20px" }}>
-          <p>
-            Already have an account?{" "}
-            <span
-              className="fw-bold"
-              style={{ cursor: "pointer", color: "#00c6ff" }}
-              onClick={() => navigate("/user-login")}
-            >
-              Login
-            </span>
-          </p>
+        <div className="text-center mt-3">
+          <span
+            style={{ cursor: "pointer", color: "#00c6ff" }}
+            onClick={() => navigate("/admin-login")}
+          >
+            Already have an account? Login
+          </span>
         </div>
       </motion.div>
     </motion.div>

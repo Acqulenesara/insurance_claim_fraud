@@ -2,6 +2,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { db } from "../firebase"; // Import Firebase
+import { collection, addDoc } from "firebase/firestore";
 
 function ClaimUpload() {
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ function ClaimUpload() {
     setIsSubmitting(true);
 
     try {
+      // Step 1: Send data to ML backend
       const form = new FormData();
       Object.keys(formData).forEach((key) => {
         if (formData[key] !== null) {
@@ -75,19 +78,60 @@ function ClaimUpload() {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // ✅ Navigate to success page with result
-      navigate("/claim-success", { state: { result: res.data, error: false } });
+      // Step 2: Save to Firebase with ML results
+      const claimData = {
+        ...formData,
+        claim_image: formData.claim_image ? formData.claim_image.name : null, // Store filename only
+        fraud_score: res.data.hybrid_result.fraud_score,
+        risk_level: res.data.hybrid_result.risk_level,
+        ai_action: res.data.ai_check.action,
+        created_at: new Date(),
+        status: "Under Review"
+      };
+
+      const docRef = await addDoc(collection(db, "claims"), claimData);
+      console.log("Claim saved with ID: ", docRef.id);
+
+      // Step 3: Navigate to success page with results
+      navigate("/claim-success", { 
+        state: { 
+          result: res.data, 
+          claimId: docRef.id,
+          error: false 
+        } 
+      });
 
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
 
-      // ✅ Navigate to success page even if there's an error
-      navigate("/claim-success", {
-        state: {
-          error: true,
-          message: "⚠ There was an issue submitting your claim. Our team will review manually.",
-        },
-      });
+      // Save basic claim data even if ML fails
+      try {
+        const basicClaimData = {
+          ...formData,
+          claim_image: formData.claim_image ? formData.claim_image.name : null,
+          created_at: new Date(),
+          status: "Pending Manual Review",
+          error: "ML analysis failed"
+        };
+
+        const docRef = await addDoc(collection(db, "claims"), basicClaimData);
+        
+        navigate("/claim-success", {
+          state: {
+            error: true,
+            claimId: docRef.id,
+            message: "⚠️ There was an issue with automated analysis. Our team will review manually.",
+          },
+        });
+      } catch (dbError) {
+        console.error("Database error:", dbError);
+        navigate("/claim-success", {
+          state: {
+            error: true,
+            message: "⚠️ There was an issue submitting your claim. Please try again.",
+          },
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

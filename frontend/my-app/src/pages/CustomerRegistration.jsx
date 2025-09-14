@@ -1,58 +1,73 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 
 function CustomerRegistration() {
   const [formData, setFormData] = useState({
     name: "",
-    address: "",
     email: "",
-    vehicle: "",
-    claimType: "",
-    photo: null,
-    signature: null,
+    password: "",
+    phone: "",
+    address: "",
   });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
     setFormData({
       ...formData,
-      [name]: files ? files[0] : value,
+      [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
+    setLoading(true);
+    setError("");
     setMessage("");
 
-    setTimeout(() => {
-      setMessage("✅ Customer Registered Successfully!");
-      setFormData({
-        name: "",
-        address: "",
-        email: "",
-        vehicle: "",
-        claimType: "",
-        photo: null,
-        signature: null,
+    try {
+      // Create user account
+      const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      
+      // Store customer data in Firestore
+      await setDoc(doc(db, 'customers', userCredential.user.uid), {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        address: formData.address,
+        role: 'customer',
+        createdAt: new Date()
       });
-      setIsSubmitting(false);
-    }, 1500);
+      
+      setMessage("✅ Customer Registered Successfully! You can now login.");
+      setTimeout(() => {
+        navigate("/user-login");
+      }, 2000);
+      
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <motion.div
-      className="min-h-screen flex justify-center items-center"
+      className="min-h-screen flex justify-center items-center py-4"
       style={{ background: "linear-gradient(135deg, #141E30, #243B55)" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
       <motion.div
-        className="shadow-lg rounded-lg w-full max-w-md"
+        className="shadow-lg rounded-lg w-full max-w-md mx-4"
         style={{
           padding: "2rem",
           background: "rgba(255, 255, 255, 0.1)",
@@ -65,133 +80,126 @@ function CustomerRegistration() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: "easeOut" }}
       >
-        <h2 className="text-center font-bold text-xl mb-8">
-          Customer Registration
-        </h2>
+        <h2 className="text-center font-bold text-xl mb-6">Customer Registration</h2>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Full Name */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">
-              Full Name
-            </label>
+        {error && (
+          <div style={{
+            background: "rgba(255, 0, 0, 0.1)",
+            border: "1px solid rgba(255, 0, 0, 0.3)",
+            padding: "10px",
+            borderRadius: "5px",
+            marginBottom: "15px",
+            fontSize: "14px"
+          }}>
+            {error}
+          </div>
+        )}
+
+        {message && (
+          <div style={{
+            background: "rgba(0, 255, 0, 0.1)",
+            border: "1px solid rgba(0, 255, 0, 0.3)",
+            padding: "10px",
+            borderRadius: "5px",
+            marginBottom: "15px",
+            fontSize: "14px"
+          }}>
+            {message}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Full Name</label>
             <input
               type="text"
               name="name"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
               value={formData.name}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-300 text-black"
               required
             />
           </div>
 
-          {/* Address */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">
-              Address
-            </label>
-            <input
-              type="text"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-300 text-black"
-              required
-            />
-          </div>
-
-          {/* Email */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">Email</label>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
             <input
               type="email"
               name="email"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-300 text-black"
               required
             />
           </div>
 
-          {/* Vehicle Details */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">
-              Vehicle Details
-            </label>
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.password}
+              onChange={handleChange}
+              required
+              minLength="6"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Phone</label>
+            <input
+              type="tel"
+              name="phone"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.phone}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Address</label>
             <input
               type="text"
-              name="vehicle"
-              value={formData.vehicle}
+              name="address"
+              className="form-control"
+              style={{ background: "#fff", color: "#000" }}
+              value={formData.address}
               onChange={handleChange}
-              className="w-full p-3 rounded border border-gray-300 text-black"
+              required
             />
           </div>
 
           
 
-          {/* Upload Photo */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">
-              Upload Photo
-            </label>
-            <input
-              type="file"
-              name="photo"
-              onChange={handleChange}
-              className="w-full p-2 rounded border border-gray-300 text-black bg-white"
-            />
-            {formData.photo && (
-              <p className="mt-2 text-xs text-blue-400">
-                Selected: {formData.photo.name}
-              </p>
-            )}
-          </div>
-
-          {/* Upload Signature */}
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            <label className="text-sm font-semibold mb-2">
-              Upload Signature
-            </label>
-            <input
-              type="file"
-              name="signature"
-              onChange={handleChange}
-              className="w-full p-2 rounded border border-gray-300 text-black bg-white"
-            />
-            {formData.signature && (
-              <p className="mt-2 text-xs text-blue-400">
-                Selected: {formData.signature.name}
-              </p>
-            )}
-          </div>
-
-          {/* Submit Button */}
           <motion.button
             type="submit"
-            disabled={isSubmitting}
-            className="w-full py-3 rounded font-bold"
+            disabled={loading}
+            className="btn w-100 fw-bold rounded-pill py-3"
             style={{
-              background: "linear-gradient(90deg, #00c6ff, #0072ff)",
+              background: loading ? "#666" : "linear-gradient(90deg, #00c6ff, #0072ff)",
               border: "none",
               color: "#fff",
-              fontSize: "15px",
-              letterSpacing: "0.5px",
-              marginTop: "1rem",
             }}
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 15px rgba(0, 114, 255, 0.6)",
-            }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={!loading ? { scale: 1.05 } : {}}
           >
-            {isSubmitting ? "Registering..." : "Register"}
+            {loading ? "Registering..." : "Register"}
           </motion.button>
         </form>
 
-        {/* Status Message */}
-        {message && (
-          <p className="mt-6 text-center text-sm text-green-400">{message}</p>
-        )}
+        <div className="text-center mt-3">
+          <span
+            style={{ cursor: "pointer", color: "#00c6ff" }}
+            onClick={() => navigate("/user-login")}
+          >
+            Already have an account? Login
+          </span>
+        </div>
       </motion.div>
     </motion.div>
   );

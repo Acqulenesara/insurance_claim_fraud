@@ -6,6 +6,7 @@ import UserLogin from "./pages/UserLogin";
 import UserSignup from "./pages/UserSignup";
 import UserDashboard from "./pages/UserDashboard";
 import ClaimUpload from "./pages/ClaimUpload";
+import ClaimSuccess from "./pages/ClaimSuccess"; // Add this import
 import AdminLogin from "./pages/AdminLogin";
 import AdminSignup from "./pages/AdminSignup";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -13,6 +14,8 @@ import CompanyClaims from "./pages/CompanyClaims";
 import CustomerRegistration from "./pages/CustomerRegistration";
 import ClaimsList from "./pages/ClaimsList";
 
+// Import Firebase
+import './firebase'; // Initialize Firebase
 
 function App() {
   return (
@@ -26,6 +29,7 @@ function App() {
         <Route path="/user-signup" element={<UserSignup />} />
         <Route path="/user-dashboard" element={<UserDashboard />} />
         <Route path="/upload-claim" element={<ClaimUpload />} />
+        <Route path="/claim-success" element={<ClaimSuccess />} /> {/* Add this route */}
 
         {/* Admin Routes */}
         <Route path="/admin-login" element={<AdminLogin />} />
@@ -34,7 +38,6 @@ function App() {
         <Route path="/company-claims/:id" element={<CompanyClaims />} />
         <Route path="/customer-registration" element={<CustomerRegistration />} />
         <Route path="/claims-list" element={<ClaimsList />} />
-        
       </Routes>
     </Router>
   );
