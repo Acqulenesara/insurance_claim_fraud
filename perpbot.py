@@ -100,7 +100,7 @@ Output strictly in JSON with this schema:
     }
 
     try:
-        resp = requests.post(url, headers=headers, data=json.dumps(data), timeout=30)
+        resp = requests.post(url, headers=headers, data=json.dumps(data), timeout=60)
         resp.raise_for_status()
         result = resp.json()
         content = result.get("choices", [])[0].get("message", {}).get("content")
